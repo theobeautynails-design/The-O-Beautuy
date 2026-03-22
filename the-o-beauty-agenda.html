@@ -1195,7 +1195,7 @@ async function loadAdminCitas(){
   document.getElementById('adminCitasCount').textContent='Cargando...';
   document.getElementById('adminCitasList').innerHTML='<div class="empty-state"><div class="empty-icon">⏳</div><p>Cargando citas...</p></div>';
   try{
-    const res=await fetch(`${SCRIPT_URL}?action=citas`);
+    const res=await fetch(`${SCRIPT_URL}?action=citas&fecha=`);
     const json=await res.json();
     if(json.status==='ok'){
       const citas=json.data.sort((a,b)=>(a.fechaISO+a.hora).localeCompare(b.fechaISO+b.hora));
