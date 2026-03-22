@@ -1221,21 +1221,39 @@ async function loadAdminCitas(){
           ${!esBloqueo&&!esWendy?`<div class="cita-detail">💅 ${c.servicio} · ${c.tecnica} · ${c.diseno} · Retiro: ${c.retiro}</div>`:''}
           ${esWendy?`<div class="cita-detail">💼 ${c.servicio}</div>`:''}
           <div class="cita-actions" style="flex-wrap:wrap;gap:5px;">
-            ${!esBloqueo&&!esWendy&&c.telefono&&c.telefono!=='—'?`
-              <button class="btn-recordatorio" onclick="recordatorio('${c.nombre}','${c.telefono}','${c.fechaISO}','${c.hora}','24')">📲 24hrs</button>
-              <button class="btn-recordatorio" onclick="recordatorio('${c.nombre}','${c.telefono}','${c.fechaISO}','${c.hora}','12')">📲 12hrs</button>
-            `:''}
-            ${!esBloqueo&&!esWendy?`
-              <button class="btn-xs btn-edit" onclick="openEdit('${c.id}','${c.fechaISO}','${c.hora}')">✏️ Editar</button>
-              <button class="btn-xs" style="background:#e8f5e9;color:#2e7d32;border:none;border-radius:7px;padding:4px 8px;font-size:10.5px;cursor:pointer;" onclick="toggleDeposito('${c.id}','${c.depositoPagado}')">💳 ${c.depositoPagado==='Sí'?'✓ Depósito':'Depósito'}</button>
-            `:''}
-            <button class="btn-xs btn-cancel" onclick="cancelarCita('${c.id}')">✕ ${esBloqueo?'Desbloquear':esWendy?'Cancelar Wendy':'Cancelar'}</button>
-          </div>
+  ${!esBloqueo&&!esWendy&&c.telefono&&c.telefono!=='-'?`
+    <button class="btn-recordatorio" onclick="recordatorio('${c.nombre}','${c.telefono}','${c.fechaISO}','${c.hora}','24')">📅 24hrs</button>
+    <button class="btn-recordatorio" onclick="recordatorio('${c.nombre}','${c.telefono}','${c.fechaISO}','${c.hora}','12')">🕐 12hrs</button>
+  `:''}
+  ${!esBloqueo&&!esWendy?`
+    <button class="btn-xs btn-edit" onclick="openEdit('${c.id}','${c.fechaISO}','${c.hora}')">✏️ Editar</button>
+    <button class="btn-xs" style="background:#e8f5e9;color:#2e7d32;border:none;border-radius:7px;padding:4px 8px;font-size:10.5px;cursor:pointer;" onclick="toggleDeposito('${c.id}','${c.depositoPagado}')">${c.depositoPagado==='Sí'?'💰 Depósito ✓':'💸 Depósito'}</button>
+  `:''}
+  <button class="btn-xs btn-cancel" onclick="cancelarCita('${c.id}')">✕ ${esBloqueo?'Desbloquear':esWendy?'Cancelar Wendy':'Cancelar'}</button>
+</div>
+${!esBloqueo&&!esWendy&&c.telefono&&c.telefono!=='-'?`
+<div style="display:flex;gap:6px;margin-top:5px;flex-wrap:wrap;">
+  ${c.estado==='Pendiente'?`
+    <button style="background:linear-gradient(135deg,#28a745,#1e7e34);color:#fff;border:none;border-radius:9px;padding:7px 13px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;" onclick="confirmarCitaAdmin('${c.id}',this)">✅ Confirmar cita</button>
+  `:'<button style="background:#d4edda;color:#155724;border:1.5px solid #28a745;border-radius:9px;padding:7px 13px;font-size:12px;font-weight:600;cursor:default;font-family:inherit;" disabled>✅ Confirmada</button>'}
+  <a style="background:#25D366;color:#fff;border:none;border-radius:9px;padding:7px 11px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;text-decoration:none;display:inline-flex;align-items:center;gap:4px;" href="https://wa.me/52${c.telefono.replace(/\D/g,'')}?text=${encodeURIComponent(`🌸 *¡Tu cita está confirmada, ${c.nombre}!* 🌸\n\n📅 *Fecha:* ${c.fechaISO}\n⏰ *Hora:* ${c.hora}\n💅 *Servicio:* ${c.servicio}\n✨ *Técnica:* ${c.tecnica}\n\n📍 *The Õ Beauty*\nhttps://maps.app.goo.gl/oBYRZgvjU2NBCTaJA\n\n⚠️ *Recuerda:*\n• Llega 5 min antes ⏱️\n• Si necesitas cancelar, avísanos con 24 hrs 🙏\n• Tu depósito asegura tu lugar 💛\n\n¡Te esperamos! 🤍✨`)}" target="_blank">💬 Enviar confirmación</a>
+  ${c.estado!=='Pendiente'?`<a style="background:#FF6B35;color:#fff;border:none;border-radius:9px;padding:7px 11px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;text-decoration:none;display:inline-flex;align-items:center;gap:4px;" href="https://wa.me/52${c.telefono.replace(/\D/g,'')}?text=${encodeURIComponent(`⏰ *¡Hola ${c.nombre}!*\n\nTe recordamos que tu cita es *hoy*:\n\n🕐 *${c.hora}* — ¡Ya casi!\n💅 *${c.servicio}*\n\n📍 The Õ Beauty\nhttps://maps.app.goo.gl/oBYRZgvjU2NBCTaJA\n\n¡Te esperamos! 🌸`)}" target="_blank">⏰ Recordatorio 1.5hrs</a>`:''}
+</div>
+`:''}
         </div>`;
       });
       document.getElementById('adminCitasList').innerHTML=html;
     }
   }catch(e){document.getElementById('adminCitasList').innerHTML='<div class="empty-state"><div class="empty-icon">⚠️</div><p>Error al cargar citas</p></div>';}
+}
+async function confirmarCitaAdmin(id, btn){
+  btn.disabled=true; btn.textContent='⏳ Confirmando...';
+  try{
+    const r=await fetch(`${SCRIPT_URL}?action=confirmarCita&id=${id}`);
+    const d=await r.json();
+    if(d.status==='ok'){showToast('✅ ¡Cita confirmada!');loadAdminCitas();}
+    else{showToast('Error: '+d.msg,'err');btn.disabled=false;btn.textContent='✅ Confirmar cita';}
+  }catch(e){showToast('Error de conexión','err');btn.disabled=false;btn.textContent='✅ Confirmar cita';}
 }
 async function cancelarCita(id){
   if(!confirm('¿Confirmas cancelar/desbloquear este horario?')) return;
