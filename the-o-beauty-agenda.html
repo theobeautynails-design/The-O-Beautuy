@@ -1208,7 +1208,7 @@ async function loadAdminCitas(){
         const esApertura=c.tipo==='Apertura especial';
         const esBloqueo=c.tipo==='Bloqueo';
         const esWendy=c.tipo==='Wendy';
-        const d=new Date(c.fechaISO+'T12:00:00');
+        const d=new Date(c.fechaISO.split('T')[0]+'T12:00:00');
         const fl=`${DAY_NAMES[d.getDay()]} ${d.getDate()} de ${MONTHS_F[d.getMonth()]}`;
         html+=`<div class="cita-row${esApertura?' apertura':''}">
           <div class="cita-top">
