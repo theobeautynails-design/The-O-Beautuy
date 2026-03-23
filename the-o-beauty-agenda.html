@@ -1052,7 +1052,7 @@ async function pickDay(y,m,d,el){
     html=SLOTS.map(s=>{
       const tomada=estaHoraBloqueada(s.time,minBloqueados);
       const c=citasDelDia.find(x=>horaAMin(x.hora)<=horaAMin(s.time)&&horaAMin(s.time)<horaAMin(x.hora)+120);
-      return `<button class="slot-btn${tomada?' taken':''}" id="${s.id}" onclick="${tomada?'':'pickSlot(\''+s.time+'\',\''+s.id+'\')'}" ${tomada?'disabled':''}><div class="slot-icon">${s.icon}</div><div><span class="slot-time">${s.time}</span><span class="slot-note">${s.note}</span>${tomada?`<span class="slot-taken-label">🔒 ${c?c.nombre.split(' ')[0]:'Reservado'}</span>`:''}</div></button>`;
+      return `<button class="slot-btn${tomada?' taken':''}" id="${s.id}" onclick="${tomada?'':'pickSlot(\''+s.time+'\',\''+s.id+'\')'}" ${tomada?'disabled':''}><div class="slot-icon">${s.icon}</div><div><span class="slot-time">${s.time}</span><span class="slot-note">${s.note}</span>${tomada?'<span class="slot-taken-label">🌸 Este horario ya tiene dueña</span>':''}</div></button>`;
     }).join('');
     html+=`<button class="slot-btn custom-slot" id="btnCustomSlot" onclick="if(!vipTriggered)pickCustom()" onmousedown="startVipTimer()" onmouseup="cancelVipTimer()" onmouseleave="cancelVipTimer()" ontouchstart="startVipTimer(event)" ontouchend="cancelVipTimer(event)" ontouchcancel="cancelVipTimer(event)" ><div class="slot-icon">✨</div><div><span class="slot-time">Horario flexible 🌸</span><span class="slot-note">Contáctame si ninguno te queda</span></div></button>`;
   }
