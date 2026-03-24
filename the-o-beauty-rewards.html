@@ -950,12 +950,12 @@ async function applyCredit() {
   const btn = document.querySelector('.btn-apply');
   btn.textContent = '...'; btn.disabled = true;
   const res = await apiPost({
-    action: 'updateCredit',
-    id: currentClient.id,
-    creditDelta: creditEarned,
-    visitTotal: creditAction === 'add' ? amt : 0,
-    tipo
-  });
+  action: 'updateCredit',
+  phone: currentClient.phone,
+  creditDelta: creditEarned,
+  visitTotal: creditAction === 'add' ? amt : 0,
+  tipo
+});
   if (res.ok) {
     const newCredit = (parseFloat(currentClient.credit) || 0) + creditEarned;
     currentClient.credit = newCredit.toFixed(2);
