@@ -646,8 +646,9 @@ function syncToSheets(c){
     method:'POST',
     headers:{'Content-Type':'text/plain'},
     body:JSON.stringify({
-      lealtad:true,
-      id:c.id, nombre:c.name, telefono:c.phone,
+  action:'lealtad',
+  lealtad:true,
+  id:c.id, nombre:c.name, telefono:c.phone,
       nacimiento:c.birth||'', correo:c.email||'',
       instagram:c.instagram||'', source:c.source||'',
       nivel:lvl(c.level), tarjetaNum:c.cards.length,
