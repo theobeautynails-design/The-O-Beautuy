@@ -1126,14 +1126,19 @@ function changeLevel(lv){
   renderCard(curC,true);
 }
 
-function openStamp(){document.getElementById('stamp-nm').textContent=curC.name;openModal('modal-stamp');}
+function openStamp(){
+  document.getElementById('stamp-nm').textContent=curC.name;
+  document.getElementById('stamp-date').value=new Date().toISOString().split('T')[0];
+  openModal('modal-stamp');
+}
 function confirmStamp(){
   const card=curCard(curC);
   if(!curC||card.stamps>=10){showToast('Tarjeta completa — inicia una nueva');return;}
   closeModal('modal-stamp');
   const prevStamps=card.stamps;
   card.stamps++;
-  card.visits.push({date:new Date().toISOString().split('T')[0],s:card.stamps});
+  const stampDate=document.getElementById('stamp-date').value||new Date().toISOString().split('T')[0];
+card.visits.push({date:stampDate,s:card.stamps});
   // unlock rewards earned on PREVIOUS visits (this visit is the "next visit" after reaching 5 or 10)
   if(!card.rewardUnlocked) card.rewardUnlocked={5:false,10:false};
   if(prevStamps>=5&&!card.rewards[5]) card.rewardUnlocked[5]=true;
