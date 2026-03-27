@@ -548,10 +548,12 @@ body{font-family:'Nunito',sans-serif;background:var(--soft);color:var(--text);mi
     <button class="mx" onclick="closeModal('modal-stamp')">×</button>
     <div class="mt">Agregar sello 🌸</div>
     <div class="ms" id="stamp-nm"></div>
-    <p style="color:var(--light);font-size:.88rem;margin-bottom:1.8rem;line-height:1.6;">¿Confirmas agregar un sello de visita?<br><span style="font-size:.78rem;color:#bbb;">Compra mínima: $400</span></p>
-    <button class="btn-f" onclick="confirmStamp()">✓ Confirmar sello</button>
-    <button class="btn-g" onclick="closeModal('modal-stamp')">Cancelar</button>
-  </div>
+      <p style="color:var(--light);font-size:.88rem;margin-bottom:1.2rem;line-height:1.6;">¿Confirmas agregar un sello de visita?<br><span style="font-size:.78rem;color:#bbb;">Compra mínima: $400</span></p>
+    <div class="fg">
+      <label class="fl">📅 Fecha del sello</label>
+      <input type="date" id="stamp-date" class="fi">
+      <div style="font-size:.7rem;color:#bbb;margin-top:.3rem;">Por defecto: hoy. Cámbiala si el sello es de otra fecha.</div>
+    </div>
 </div>
 
 <!-- REWARD MODAL -->
