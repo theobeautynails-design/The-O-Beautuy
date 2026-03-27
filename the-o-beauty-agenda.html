@@ -1122,14 +1122,12 @@ async function buildConfirm(){
   document.getElementById('cfTecnica').textContent=s.tecnica;
   document.getElementById('cfDiseno').textContent=s.diseno;
   // Guardar cita en Sheets (solo si NO es apertura especial pendiente)
-  if(!ST.isAperturaPendiente){
-    try{
-      await fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({action:'guardarCita',fechaISO:iso,hora:ST.selectedTime,nombre:ST.nombre,telefono:ST.tel,servicio:s.servicio,tecnica:s.tecnica,retiro:s.retiro,diseno:s.diseno,tipo:'Normal'})});
-      if(!ST.citasCache[iso])ST.citasCache[iso]=[];
-      ST.citasCache[iso].push({hora:ST.selectedTime,nombre:ST.nombre,fechaISO:iso});
-    }catch(e){}
-  }
+  try{
+  await fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({action:'guardarCita',fechaISO:iso,hora:ST.selectedTime,nombre:ST.nombre,telefono:ST.tel,servicio:s.servicio,tecnica:s.tecnica,retiro:s.retiro,diseno:s.diseno,tipo:ST.isAperturaPendiente?'Apertura':'Normal'})});
+  if(!ST.citasCache[iso])ST.citasCache[iso]=[];
+  ST.citasCache[iso].push({hora:ST.selectedTime,nombre:ST.nombre,fechaISO:iso});
+}catch(e){}
   // WhatsApp
   const msg=`Hola The Õ Beauty! 🌸 Quiero confirmar mi cita:\n\n👤 *Nombre:* ${ST.nombre}\n📅 *Fecha y hora:* ${dateStr}${apertura}\n🗑️ *Retiro:* ${s.retiro}\n💅 *Servicio:* ${s.servicio}\n🎨 *Técnica:* ${s.tecnica}\n✨ *Diseño:* ${s.diseno}`;
   document.getElementById('btnWa').href=`https://wa.me/525529158051?text=${encodeURIComponent(msg)}`;
