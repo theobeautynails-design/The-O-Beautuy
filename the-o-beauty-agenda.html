@@ -1214,7 +1214,7 @@ async function loadAdminCitas(){
           <div class="cita-top">
             <div>
               <div class="cita-fecha">${fl}${esHoy?'<span class="badge-hoy">HOY</span>':''}</div>
-              <div class="cita-hora">${c.hora}${esApertura?' · <span class="badge-apertura">Apertura ✦</span>':''}${esBloqueo?' · <span class="badge-apertura">🚫 Bloqueo</span>':''}${esWendy?' · <span class="badge-apertura" style="background:linear-gradient(135deg,#b39ddb,#9c72c4);color:#fff;">✨ Spa Wendy</span>':''}${esApertura?`<div style="margin-top:6px;font-size:11.5px;color:#b8860b;font-weight:600;" id="timer-${c.id}">⏳ Calculando...</div>`:''}</div>
+              <div class="cita-hora">${c.hora}${esApertura?' · <span class="badge-apertura">Apertura ✦</span>':''}${esBloqueo?' · <span class="badge-apertura">🚫 Bloqueo</span>':''}${esWendy?' · <span class="badge-apertura" style="background:linear-gradient(135deg,#b39ddb,#9c72c4);color:#fff;">✨ Spa Wendy</span>':''}<div style="margin-top:6px;font-size:11.5px;color:#b8860b;font-weight:600;" id="timer-${c.id}">⏳ Calculando...</div></div>
             </div>
           </div>
           <div class="cita-nombre">👤 ${c.nombre}${c.telefono&&c.telefono!=='—'?' · '+c.telefono:''}</div>
@@ -1241,8 +1241,7 @@ ${!esBloqueo&&!esWendy&&c.telefono&&c.telefono!=='-'?`
 </div>
 `:''}
         </div>`;
-        if(esApertura){
-          const horaLimpia=(c.hora||'').replace(/\(.*\)/,'').trim();
+        const horaLimpia=(c.hora||'').replace(/\(.*\)/,'').trim();
           const partes=horaLimpia.match(/(\d+):(\d+)\s*(AM|PM)/i);
           if(partes){
             let hh=parseInt(partes[1]);const mm=parseInt(partes[2]);const mer=partes[3].toUpperCase();
@@ -1259,7 +1258,6 @@ ${!esBloqueo&&!esWendy&&c.telefono&&c.telefono!=='-'?`
               el.textContent='⏳ Faltan '+(d>0?d+'d ':'')+h+'h '+m+'m para la cita';
             },1000);
           }
-        }
       });
       document.getElementById('adminCitasList').innerHTML=html;
     }
