@@ -1260,6 +1260,7 @@ ${!esBloqueo&&!esWendy&&c.telefono&&c.telefono!=='-'?`
               el.textContent='⏳ Faltan '+(d>0?d+'d ':'')+h+'h '+m+'m para la cita';
             },1000);
           }
+        });
       document.getElementById('adminCitasList').innerHTML=html;
     }
   }catch(e){console.error('ERROR REAL:', e.message, e); document.getElementById('adminCitasList').innerHTML='<div class="empty-state"><div class="empty-icon">⚠️</div><p>Error al cargar citas</p></div>';}
